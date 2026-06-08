@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gmail - Sign in</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  #loginPage {
+    width: 100%;
+    max-width: 450px;
+    padding: 2rem;
+  }
+
+  .google-logo {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  .google-logo span:nth-child(1) { color: #4285F4; }
+  .google-logo span:nth-child(2) { color: #EA4335; }
+  .google-logo span:nth-child(3) { color: #FBBC05; }
+  .google-logo span:nth-child(4) { color: #4285F4; }
+  .google-logo span:nth-child(5) { color: #34A853; }
+  .google-logo span:nth-child(6) { color: #EA4335; }
+
+  .card {
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    padding: 2.5rem;
+  }
+
+  .card h1 {
+    font-size: 1.5rem;
+    color: #202124;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .card p {
+    text-align: center;
+    color: #5f6368;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .input-group { margin-bottom: 1.5rem; }
+
+  .input-group label {
+    display: block;
+    color: #5f6368;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+    color: #202124;
+  }
+
+  .input-group input:focus { border: 2px solid #1a73e8; }
+
+  .forgot {
+    color: #1a73e8;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-create {
+    color: #1a73e8;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .btn-next {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  #warningPage {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #0a0a0a;
+    color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    overflow-y: auto;
+  }
+
+  .warning-icon { font-size: 5rem; margin-bottom: 1rem; }
+
+  .warning-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ff3355;
+    margin-bottom: 1rem;
+    font-family: monospace;
+  }
+
+  .warning-sub {
+    font-size: 1rem;
+    color: #aaa;
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .captured-box {
+    background: #1a0a0a;
+    border: 1px solid #ff3355;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-family: monospace;
+    text-align: left;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .clabel {
+    color: #ff3355;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .field {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    gap: 10px;
+  }
+
+  .field-name { color: #666; }
+  .field-val { color: #00ff88; word-break: break-all; }
+
+  .mitre-box {
+    background: #0a0a1a;
+    border: 1px solid #4444aa;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    max-width: 400px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    font-family: monospace;
+    font-size: 0.85rem;
+  }
+
+  .mlabel {
+    color: #8888ff;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .mitem { color: #aaa; margin-bottom: 6px; }
+  .mitem span { color: #8888ff; }
+
+  .lessons {
+    background: #0a1a0a;
+    border: 1px solid #00aa44;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    max-width: 400px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    font-size: 0.85rem;
+  }
+
+  .llabel {
+    color: #00ff88;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-family: monospace;
+  }
+
+  .litem { color: #aaa; margin-bottom: 6px; line-height: 1.5; }
+  .litem::before { content: '✓ '; color: #00ff88; }
+
+  .btn-reset {
+    background: transparent;
+    border: 1px solid #ff3355;
+    color: #ff3355;
+    padding: 12px 32px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: monospace;
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div id="loginPage">
+  <div class="google-logo">
+    <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+  </div>
+  <div class="card">
+    <h1>Sign in</h1>
+    <p>Use your Google Account</p>
+    <div class="input-group">
+      <label>Email or phone</label>
+      <input type="text" id="email" placeholder="Enter your email" />
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter your password" />
+    </div>
+    <a href="#" class="forgot">Forgot email?</a>
+    <div class="btn-row">
+      <button class="btn-create">Create account</button>
+      <button class="btn-next" onclick="submitLogin()">Next</button>
+    </div>
+  </div>
+</div>
+
+<div id="warningPage">
+  <div class="warning-icon">⚠️</div>
+  <div class="warning-title">YOU WERE PHISHED!</div>
+  <div class="warning-sub">
+    This was a simulated phishing attack for cybersecurity awareness training at SJVN Limited. In a real attack your credentials would now be stolen.
+  </div>
+
+  <div class="captured-box">
+    <div class="clabel">// CAPTURED CREDENTIALS //</div>
+    <div class="field">
+      <span class="field-name">Email:</span>
+      <span class="field-val" id="showEmail">—</span>
+    </div>
+    <div class="field">
+      <span class="field-name">Password:</span>
+      <span class="field-val" id="showPassword">—</span>
+    </div>
+    <div class="field">
+      <span class="field-name">Time:</span>
+      <span class="field-val" id="showTime">—</span>
+    </div>
+    <div class="field">
+      <span class="field-name">IP (simulated):</span>
+      <span class="field-val">192.168.1.1</span>
+    </div>
+  </div>
+
+  <div class="mitre-box">
+    <div class="mlabel">// MITRE ATT&CK TECHNIQUES //</div>
+    <div class="mitem"><span>T1566</span> — Phishing</div>
+    <div class="mitem"><span>T1566.002</span> — Spearphishing Link</div>
+    <div class="mitem"><span>T1078</span> — Valid Accounts</div>
+    <div class="mitem"><span>T1589.001</span> — Credential Stuffing</div>
+  </div>
+
+  <div class="lessons">
+    <div class="llabel">// HOW TO PROTECT YOURSELF //</div>
+    <div class="litem">Always check the URL before entering credentials</div>
+    <div class="litem">Look for HTTPS and the padlock icon</div>
+    <div class="litem">Enable two factor authentication on all accounts</div>
+    <div class="litem">Never click links in suspicious emails</div>
+    <div class="litem">Use a password manager to detect fake sites</div>
+  </div>
+
+  <button class="btn-reset" onclick="resetPage()">TRY AGAIN</button>
+</div>
+
+<script>
+function submitLogin() {
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+
+  if (email === '' || password === '') {
+    alert('Please enter both email and password!');
+    return;
+  }
+
+  document.getElementById('showEmail').textContent = email;
+  document.getElementById('showPassword').textContent = '*'.repeat(password.length) + ' (' + password.length + ' chars)';
+  document.getElementById('showTime').textContent = new Date().toLocaleString();
+
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('warningPage').style.display = 'flex';
+}
+
+function resetPage() {
+  document.getElementById('email').value = '';
+  document.getElementById('password').value = '';
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('warningPage').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
